@@ -65,12 +65,12 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/London
-      - SERVERURL=wireguard.domain.com #optional
+      - SERVERURL=62.163.31.133 #optional
       - SERVERPORT=51820 #optional
-      - PEERS=2 #optional
+      - PEERS=5 #optional
       - PEERDNS=auto #optional
       - INTERNAL_SUBNET=10.13.13.0 #optional
-      - ALLOWEDIPS=10.13.13.1/32,10.13.13.2/32 #optional
+      - ALLOWEDIPS=10.13.13.0/24,192.168.178.0/24 #optional
       - LOG_CONFS=true #optional
     volumes:
       - ${ROOT_DIR}/docker/wireguard-config:/config
@@ -93,4 +93,31 @@ services:
       - ${ROOT_DIR}/data/portainer:/data
     ports:
       - 9000:9000
+  firefly:
+    image: fireflyiii/core:version-5.7
+    restart: always
+    environment:
+      - PUID=13020
+      - PGID=130010
+    volumes:
+      -  ${ROOT_DIR}/data/firefly:/var/www/html/storage/upload
+    env_file: .env
+    ports:
+      - 80:8082
+    depends_on:
+      - firefly_db
+  firefly_db: #Belongs with firefly
+    image: mariadb    
+    hostname: fireflyiiidb
+    restart: always
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+      - MYSQL_USER=firefly
+      - MYSQL_PASSWORD=secret_firefly_password
+      - MYSQL_DATABASE=firefly
+      - PUID=13020
+      - PGID=130010
+    volumes:
+      - ${ROOT_DIR}/firefly-config/firefly_iii_db:/var/lib/mysql
+
 
