@@ -6,7 +6,7 @@ networks:
 
 services:
   node-exporter:   #Scrapes linux machine for metrics
-    image: prom/node-exporter:latest
+    image: prom/node-exporter:1.6.0
     container_name: node-exporter
     restart: unless-stopped
     volumes:  
@@ -24,7 +24,7 @@ services:
       - monitoring
 
   prometheus:     #Stores the scraped metrics
-    image: prom/prometheus:latest
+    image: prom/prometheus:2.45.0
     container_name: prometheus
     restart: unless-stopped
     volumes:
