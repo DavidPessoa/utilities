@@ -1,0 +1,13 @@
+version: "3.1"
+
+services:
+  openvino:
+    devices:
+      - /dev/dri/renderD128:/dev/dri/renderD128
+      - /dev/dri/card0:/dev/dri/card0
+    environment:
+      - LIBVA_DRIVER_NAME=iHD
+      - INTEL_OPENCL_DEVICE=0
+      - OPENVINO_DEVICE=GPU
+    volumes:
+      - /dev/dri:/dev/dri 
